@@ -3,6 +3,8 @@
 namespace common\models\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "history".
@@ -22,6 +24,13 @@ class History extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'history';
+    }
+
+    /**
+     * @return self|\yii\db\ActiveRecord|null
+     */
+    public static function findOpen() {
+        return self::find()->where(['finished' => null])->one();
     }
 
     /**
@@ -46,6 +55,23 @@ class History extends \yii\db\ActiveRecord
             'started' => 'Начата',
             'finished' => 'Завершена',
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['started'],
+                ],
+            ]
+        ];
+    }
+
+    public function complete() {
+        $this->finished = time();
+        return $this;
     }
 
     /**

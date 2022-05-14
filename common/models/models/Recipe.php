@@ -78,4 +78,12 @@ class Recipe extends BaseModel
     {
         return $this->hasMany(RecipeNutrient::class, ['recipe_id' => 'id']);
     }
+
+    public static function getList() {
+        return self::findActive()->select(['name', 'id'])->indexBy('id')->column();
+    }
+
+    public function begin() {
+        return new History(['recipe_id' => $this->id]);
+    }
 }

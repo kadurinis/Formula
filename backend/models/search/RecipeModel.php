@@ -40,8 +40,4 @@ class RecipeModel extends Recipe
     public function getRowModel() {
         return new RecipeActiveRow(['recipe_id' => $this->id]);
     }
-
-    public static function getList() {
-        return self::findActive()->select(['name', 'id'])->indexBy('id')->column();
-    }
 }
