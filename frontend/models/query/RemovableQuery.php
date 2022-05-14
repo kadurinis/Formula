@@ -21,4 +21,16 @@ class RemovableQuery extends ActiveQuery
     public function a() {
         return $this->andWhere([$this->c('deleted_at') => null]);
     }
+
+    public function id($id) {
+        return $this->andWhere([$this->c('id') => $id]);
+    }
+
+    public function recipe($id) {
+        return $this->andWhere([$this->c('recipe_id') => $id]);
+    }
+
+    public function section($id) {
+        return $this->andWhere([$this->c('section_id') => $id]);
+    }
 }

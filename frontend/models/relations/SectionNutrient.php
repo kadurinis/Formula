@@ -4,6 +4,7 @@ namespace app\models\relations;
 
 use app\models\models\Nutrient;
 use app\models\models\Section;
+use app\models\traits\DeletableTrait;
 use Yii;
 
 /**
@@ -19,6 +20,8 @@ use Yii;
  */
 class SectionNutrient extends \yii\db\ActiveRecord
 {
+    use DeletableTrait;
+
     /**
      * {@inheritdoc}
      */

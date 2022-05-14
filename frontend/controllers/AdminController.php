@@ -5,10 +5,43 @@ namespace frontend\controllers;
 use app\models\models\Nutrient;
 use app\models\models\Section;
 use app\models\models\Type;
+use app\models\relations\SectionNutrient;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 
 class AdminController extends Controller
 {
+    public function actionSectionEditor() {
+        $id = \Yii::$app->request->get('id');
+        /** @var Section $model */
+        $model = Section::findActive()->id($id)->one();
+        if ($model) {
+            return $this->render('section-editor', ['section' => $model, 'exists' => $model->nutrients, 'nutrients' => Nutrient::findActive()->andWhere(['not', ['id' => ArrayHelper::getColumn($model->nutrients, 'id')]])->all()]);
+        }
+        throw new NotFoundHttpException('Не найдено');
+    }
+
+    public function actionAddSectionNutrient() {
+        $model = new SectionNutrient();
+        $model->attributes = \Yii::$app->request->queryParams;
+        if ($model->save()) {
+            return $this->redirect(['admin/section-editor', 'id' => $model->section_id]);
+        }
+        \Yii::$app->session->setFlash('error', current($model->getFirstErrors()));
+        echo current($model->getFirstErrors());
+    }
+
+    public function actionDeleteSectionNutrient() {
+        /** @var SectionNutrient $model */
+        $model = SectionNutrient::findActive()->andWhere(['nutrient_id' => \Yii::$app->request->get('nutrient_id'), 'section_id' => \Yii::$app->request->get('section_id')])->one();
+        if ($model->remove()->save()) {
+            return $this->redirect(['admin/section-editor', 'id' => $model->section_id]);
+        }
+        \Yii::$app->session->setFlash('error', current($model->getFirstErrors()));
+        echo current($model->getFirstErrors());
+    }
+
     public function actionLists($type = null, $section = null, $nutrient = null) {
         $type = $type ?: new Type();
         $section = $section ?: new Section();

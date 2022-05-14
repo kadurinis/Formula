@@ -37,6 +37,18 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@app/views' => '@app/views/adminlte', //  @vendor/hail812/yii2-adminlte3/src/views
+                ],
+            ],
+        ],
+        'assetManager' => [
+            'appendTimestamp' => true,
+            'basePath' => '/var/www/html/yii_app/formula/bs/assets',
+            'baseUrl' => '/bs/assets',
+        ],
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

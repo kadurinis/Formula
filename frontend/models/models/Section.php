@@ -20,6 +20,7 @@ use yii\data\ActiveDataProvider;
  * @property RecipeNutrient[] $recipeNutrients
  * @property SectionNutrient[] $sectionNutrients
  * @property Type $type
+ * @property Nutrient[] $nutrients
  */
 class Section extends \yii\db\ActiveRecord
 {
@@ -80,7 +81,14 @@ class Section extends \yii\db\ActiveRecord
      */
     public function getSectionNutrients()
     {
-        return $this->hasMany(SectionNutrient::class, ['section_id' => 'id']);
+        return $this->hasMany(SectionNutrient::class, ['section_id' => 'id'])->alias('sn')->andOnCondition(['sn.deleted_at' => null]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNutrients() {
+        return $this->hasMany(Nutrient::class, ['id' => 'nutrient_id'])->alias('n')->via('sectionNutrients')->andOnCondition(['n.deleted_at' => null]);
     }
 
     /**

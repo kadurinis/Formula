@@ -1,4 +1,7 @@
 <?php
+
+use kartik\grid\Module;
+
 return [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -9,5 +12,10 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+    ],
+    'modules' => [
+        'gridview' => [
+            'class' => Module::class
+        ]
     ],
 ];

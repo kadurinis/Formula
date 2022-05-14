@@ -16,7 +16,11 @@ trait DeletableTrait
     }
 
     public static function find($alias = null) {
-        $query = new RemovableQuery(static::class);
+        $query = static::getQueryModel();
         return $alias ? $query->alias($alias) : $query;
+    }
+
+    public static function getQueryModel() {
+        return new RemovableQuery(static::class);
     }
 }
