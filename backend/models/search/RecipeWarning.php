@@ -10,14 +10,18 @@ class RecipeWarning extends RecipeNutrientModel
         $wrong_types = self::findActive('rn')
             ->innerJoinWith('nutrient n')
             ->innerJoinWith('section s')
+            ->innerJoinWith('recipe r')
             ->andFilterWhere(['s.id' => $this->id])
+            ->andWhere(['r.deleted_at' => null])
             ->andWhere('n.type_id != s.type_id')
             ->all();
 
         /** @var self[] $dead_nutrients */
         $dead_nutrients = self::findActive('s')
             ->joinWith('allNutrients n')
+            ->innerJoinWith('recipe r')
             ->andFilterWhere(['s.id' => $this->id])
+            ->andWhere(['r.deleted_at' => null])
             ->andWhere(['not', ['n.deleted_at' => null]])
             ->all();
 

@@ -38,7 +38,14 @@ class RecipeController extends Controller
     public function actionView() {
         if ($model = $this->findModel(\Yii::$app->request->get('id'))) {
             $warning = new RecipeWarning();
-            return $this->render('view', ['model' => $model, 'dataProvider' => new ArrayDataProvider(['allModels' => $model->getRowModel()->getModels()]), 'warnings' => $warning->getModels('id')]);
+            return $this->render('view', ['model' => $model, 'models' => $model->getRowModel()->getModelsPerType(), 'warnings' => $warning->getModels('id')]);
+        }
+        throw new NotFoundHttpException();
+    }
+
+    public function actionPreview() {
+        if ($model = $this->findModel(\Yii::$app->request->get('id'))) {
+            return $this->render('preview', ['model' => $model]);
         }
         throw new NotFoundHttpException();
     }
@@ -49,7 +56,7 @@ class RecipeController extends Controller
             return 'ok';
         }
         \Yii::$app->response->statusCode = 400;
-        return is_string($model) ? $model : 'Ошибка';
+        return current($model->getFirstErrors()) ?: 'Ошибка';
     }
 
     public function actionShow() {

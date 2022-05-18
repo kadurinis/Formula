@@ -1,13 +1,10 @@
 'use strict';
 
-function summaryFunc(source, data) {
-    console.log(source, data);
-}
-
 $(document).ready(function() {
     let content = $('#recipe-edit');
     let pjax = '#recipe-pjax';
     let recipe_id = $('input[name=recipe_id]').val();
+    let total = $('#total-weight');
 
     let changeRow = (data, focus = false) => {
         $.ajax({
@@ -21,19 +18,25 @@ $(document).ready(function() {
                     timeout: 3000
                 })
                     .done(() => {
+                        refreshTotal();
                         if (focus) {
                             let f = content.find('input[data-id=' + focus + ']');
-                            console.log(f);
                             if (f) {
                                 f.focus();
                             }
                         }
                     });
             },
-            error: function (data) {
-                alert(data);
+            error: function (err) {
+                alert(err.responseText);
             }
         });
+    }
+
+    let refreshTotal = () => {
+        let sum = 0;
+        $('input[name="weight-value"]').each((i, el) => sum += Number(el.value));
+        total.html(sum > 1000 ? (Math.floor(sum / 1000) + ' кг ' + sum % 1000) : sum);
     }
 
     let buildParams = (target) => {
@@ -45,12 +48,15 @@ $(document).ready(function() {
         }
     }
 
+    refreshTotal();
+
     content
         .change('input[name=weight-value]', e => {
             if (e.target.getAttribute('name') === 'weight-value') {
                 let params = buildParams(e.target);
                 let focus = e.target.getAttribute('data-id');
                 params.weight = $(e.target).val();
+                pjax = '#' + $(e.target).closest('div[data-pjax-container=""]').prop('id');
                 changeRow(params, focus);
             }
         })
@@ -59,6 +65,7 @@ $(document).ready(function() {
                 let params = buildParams(e.target);
                 let focus = e.target.getAttribute('data-id');
                 params.comment = $(e.target).val();
+                pjax = '#' + $(e.target).closest('div[data-pjax-container=""]').prop('id');
                 changeRow(params, focus);
             }
         })
@@ -66,6 +73,7 @@ $(document).ready(function() {
             e.preventDefault();
             let params = buildParams(e.target);
             params.weight = 0;
+            pjax = '#' + $(e.target).closest('div[data-pjax-container=""]').prop('id');
             changeRow(params, false);
         });
 });

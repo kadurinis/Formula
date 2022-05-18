@@ -41,7 +41,7 @@ $this->title = 'История выполнения';
                 return $model->recipe->name;
             }
         ],
-        'started:datetime',
-        'finished:datetime',
+        ['attribute' => 'started', 'format' => ['datetime', 'php:d.m.Y H:i:s'], 'filter' => false],
+        ['attribute' => 'finished', 'format' => ['datetime', 'php:d.m.Y H:i:s'], 'filter' => false],
     ],
 ]) ?>

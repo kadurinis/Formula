@@ -13,9 +13,7 @@ class TypeModel extends Type
     }
 
     public function getQuery() {
-        return self::findActive('t')
-            ->joinWith('sections')
-            ->joinWith('nutrients');
+        return self::findActive('t');
     }
 
     public function findUsage() {

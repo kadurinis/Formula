@@ -52,7 +52,21 @@ class Display extends \yii\db\ActiveRecord
         return $model;
     }
 
+    public static function getFontCss() {
+        $fs = Yii::$app->params['font.size'];
+        $tp = Yii::$app->params['td.padding'];
+        return ".container .table tr td {font-size: {$fs}rem; padding: {$tp}px} .container div {font-size: {$fs}rem}";
+    }
+
     public static function findActive() {
         return self::find();
+    }
+
+    public function getPrimary() {
+        return $this->hasOne(Type::class, ['id' => 'primary_id']);
+    }
+
+    public function getSecondary() {
+        return $this->hasOne(Type::class, ['id' => 'secondary_id']);
     }
 }

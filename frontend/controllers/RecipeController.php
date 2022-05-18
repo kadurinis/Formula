@@ -8,9 +8,14 @@ use common\models\models\Recipe;
 use frontend\models\models\RecipeView;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 class RecipeController extends Controller
 {
+    public function actionIndex() {
+        return $this->render('index');
+    }
+
     public function actionLists() {
         return $this->render('list', ['list' => Recipe::getList()]);
     }
@@ -45,5 +50,10 @@ class RecipeController extends Controller
             $model->complete()->save();
         }
         return $this->redirect(['recipe/primary']);
+    }
+
+    public function actionGetActive() {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        return ['id' => ($model = History::findOpen()) && $model->recipe->visible ? $model->recipe_id : 0];
     }
 }

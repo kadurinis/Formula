@@ -20,6 +20,7 @@ use yii\data\ActiveDataProvider;
  * @property SectionNutrient[] $sectionNutrients
  * @property Type $type
  * @property Nutrient[] $nutrients
+ * @property Recipe[] $recipes
  */
 class Section extends BaseModel
 {
@@ -54,7 +55,7 @@ class Section extends BaseModel
             'id' => 'ID',
             'name' => 'Название',
             'type_id' => 'Тип',
-            'created_at' => 'Created At',
+            'created_at' => 'Создано',
             'deleted_at' => 'Deleted At',
         ];
     }
@@ -70,7 +71,7 @@ class Section extends BaseModel
      */
     public function getRecipeNutrients()
     {
-        return $this->hasMany(RecipeNutrient::class, ['section_id' => 'id']);
+        return $this->hasMany(RecipeNutrient::class, ['section_id' => 'id'])->alias('rn')->andOnCondition(['rn.deleted_at' => null]);
     }
 
     /**
@@ -88,6 +89,10 @@ class Section extends BaseModel
      */
     public function getNutrients() {
         return $this->hasMany(Nutrient::class, ['id' => 'nutrient_id'])->alias('n')->via('sectionNutrients')->andOnCondition(['n.deleted_at' => null]);
+    }
+
+    public function getRecipes() {
+        return $this->hasMany(Recipe::class, ['id' => 'recipe_id'])->alias('r')->via('recipeNutrients')->andOnCondition(['r.deleted_at' => null]);
     }
 
     /**

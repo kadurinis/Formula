@@ -30,10 +30,6 @@ class SectionWarning extends SectionModel
         return $arr;
     }
 
-    public function getAllNutrients() {
-        return $this->hasMany(NutrientModel::class, ['id' => 'nutrient_id'])->alias('n')->via('sectionNutrients');
-    }
-
     public static function getCount() {
         return count((new self())->getModels());
     }

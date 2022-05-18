@@ -3,47 +3,62 @@
 use backend\assets\RecipeAsset;
 use backend\models\search\RecipeActiveRow;
 use backend\models\search\RecipeModel;
+use common\models\models\Type;
 use kartik\grid\DataColumn;
 use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
 use yii\bootstrap\Html;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+
 /**
  * @var RecipeModel $model
+ * @var RecipeActiveRow[] $models indexed by type_id
  * @var ActiveDataProvider $dataProvider
  * @var array $warnings
  */
-$this->title = $model->name;
-$this->params['hideTitle'] = true;
+$this->title = $model->name . ': редактор компонентов';
 RecipeAsset::register($this);
+$types = Type::getList();
+$this->registerCss('.kv-page-summary td:last-child {display: none}');
 ?>
 <div class="row" style="font-size: 2rem; padding: 10px">
-    <div class="col-md-3">
+    <div class="col-md-6" style="white-space: nowrap">
         <?= Html::a(
-                Html::tag('span', '', ['class' => 'glyphicon glyphicon-chevron-left']) . '&nbsp;' . 'Список рецептов',
-                ['recipe/index'],
-                ['class' => 'btn btn-info']
+            Html::tag('span', '', ['class' => 'glyphicon glyphicon-chevron-left']) . '&nbsp;' . 'Список рецептов',
+            ['recipe/index'],
+            ['class' => 'btn btn-info']
         ) ?>
         <?= Html::a(
-                'Редактировать',
-                ['recipe/edit', 'id' => $model->id],
-                ['class' => 'btn btn-primary']
+            'Редактировать',
+            ['recipe/edit', 'id' => $model->id],
+            ['class' => 'btn btn-primary']
         ) ?>
     </div>
-    <div class="col-md-3"><?= $model->name ?></div>
-    <div class="col-md-3"><?= $model->field ?></div>
-    <div class="col-md-3"><?= $model->percent ?></div>
+    <div class="col-md-6" style="text-align: right">
+        <?= $model->name ?> &nbsp;
+        <?= date('d.m.Y', $model->created_at) ?> &nbsp;
+        <?= $model->field ?> &nbsp;
+        <?= $model->percent ?><br />
+        <div style="font-size: 14pt">
+            Итого: <span id="total-weight">0</span> г
+        </div>
+    </div>
 </div>
-<div id="recipe-edit">
+<div id="recipe-edit" style="max-height: 100vh; overflow-y: scroll">
 <?= Html::hiddenInput('recipe_id', $model->id) ?>
+
+<?php foreach ($models as $id => $list) : ?>
+<h3><?= $types[$id] ?></h3>
 <?= GridView::widget([
-    'dataProvider' => $dataProvider,
+    'dataProvider' => new ArrayDataProvider(['allModels' => $list, 'pagination' => ['pageSize' => 100]]),
     'resizableColumns' => false,
     'striped' => false,
     'hover' => true,
+    'showPageSummary' => true,
     'pjax' => true,
     'pjaxSettings' => [
-        'options' => ['id' => 'recipe-pjax'],
+        'options' => ['id' => 'recipe-pjax-' . $id],
     ],
     'layout' => '{items}',
     'rowOptions' => static function (RecipeActiveRow $model) use ($warnings) {
@@ -61,33 +76,41 @@ RecipeAsset::register($this);
             'group' => true,
             'groupFooter' => function (RecipeActiveRow $model, $key, $index, $widget) { // Closure method
                 return [
-                    'mergeColumns' => [[1,3]], // columns to merge in summary
+                    'mergeColumns' => [[1,2]], // columns to merge in summary
                     'content' => [             // content to show in each summary cell
                         1 => '<span style="float:right">Итого</span>',
-                        4 => GridView::F_SUM,
+                        3 => GridView::F_SUM,
                     ],
                     'contentFormats' => [      // content reformatting for each summary cell
-                        4 => ['format' => 'number', 'decimals' => 2],
+                        3 => ['format' => 'number', 'decimals' => 2],
                     ],
                     'contentOptions' => [      // content html attributes for each summary cell
                         1 => ['style' => 'font-variant:small-caps'],
-                        4 => ['style' => 'text-align:right'],
-                        5 => ['style' => 'display: none'],
+                        3 => ['style' => 'text-align:right'],
+                        4 => ['style' => 'display: none'],
                     ],
                     // html attributes for group summary row
                     'options' => ['class' => 'info table-info','style' => 'font-weight:bold;']
                 ];
             }
         ],
-        [
+        /*[
             'attribute' => 'section.type.name',
             'group' => true,
+            'subGroupOf' => 1,
+        ],*/
+        [
+            'attribute' => 'nutrient.name',
+            'format' => 'text',
+            'pageSummary' => 'Итого',
+            'pageSummaryOptions' => ['class' => 'text-right text-end'],
         ],
-        'nutrient.name:text',
         [
             'attribute' => 'weight',
-            'contentOptions' => ['style' => 'display:none'],
+            'contentOptions' => ['style' => 'display:none', 'class' => 'weight-number'],
             'headerOptions' => ['style' => 'display:none'],
+            'pageSummary' => true,
+            'pageSummaryFunc' => GridView::F_SUM
         ],
         [
             'class' => DataColumn::class,
@@ -116,5 +139,5 @@ RecipeAsset::register($this);
         ],
     ],
 ]) ?>
+<?php endforeach ?>
 </div>
-

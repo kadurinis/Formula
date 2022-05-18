@@ -14,7 +14,7 @@ use yii\bootstrap\Html;
 use yii\data\ActiveDataProvider;
 use yii\web\View;
 
-$this->title = 'Нутриенты секции ' . $model->name;
+$this->title = 'Нутриенты секции: ' . $model->name;
 ?>
 <style>
     #relationship .btn {margin: 4px}
@@ -25,13 +25,24 @@ $this->title = 'Нутриенты секции ' . $model->name;
     <div class="col-md-4">
         <h3>Прикрепленные</h3>
         <sup>Нажми, чтобы удалить</sup>
-        <?php foreach ($bound as $item) : ?>
-            <?= Html::a(
-                Html::tag('span', '', ['class' => 'fa fa-minus']) . '&nbsp' . $item->name,
-                ['section/release-nutrient', 'SectionNutrientModel[section_id]' => $model->id, 'SectionNutrientModel[nutrient_id]' => $item->id],
-                $item->type_id === $model->type_id ? ['class' => 'btn btn-success form-control'] : ['class' => 'btn btn-danger form-control', 'title' => 'Типы у секции и нутриента отличаются. Вероятно, нутриент больше не подходит этой секции']
-            ) ?>
-        <?php endforeach ?>
+        <?php
+            foreach ($bound as $item) {
+                $class = 'btn form-control btn-success';
+                $title = '';
+                if ($item->type_id !== $model->type_id) {
+                    $class = 'btn form-control btn-warning';
+                    $title = 'Типы у секции и нутриента отличаются. Вероятно, нутриент больше не подходит этой секции';
+                }
+                if (!$item->isAlive()) {
+                    $class = 'btn form-control btn-danger';
+                    $title = 'Нутриент удален из справочника';
+                }
+                echo Html::a(
+                    Html::tag('span', '', ['class' => 'fa fa-minus']) . '&nbsp' . $item->name,
+                    ['section/release-nutrient', 'SectionNutrientModel[section_id]' => $model->id, 'SectionNutrientModel[nutrient_id]' => $item->id],
+                    ['class' => $class, 'title' => $title]
+                );
+            } ?>
     </div>
     <div class="col-md-2"></div>
     <div class="col-md-4">

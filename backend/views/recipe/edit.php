@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
  * @var RecipeModel $model
  */
 $is_new = $model->isNewRecord;
-$this->title = $is_new ? 'Добавление рецепта' : 'Редактирование ' . $model->name;
+$this->title = $is_new ? 'Добавление рецепта' : $model->name . ': редактирование полей';
 ?>
 
 <?php $form = ActiveForm::begin(['method' => 'post']) ?>

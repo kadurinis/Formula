@@ -1,25 +1,29 @@
 <?php
 
+use common\models\models\Display;
 use frontend\models\models\RecipeView;
 use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
+use yii\helpers\Html;
 
 /**
  * @var \yii\data\ActiveDataProvider $dataProvider
+ * @var \yii\web\View $this
  */
+$this->registerCss(Display::getFontCss());
 ?>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'resizableColumns' => false,
     'striped' => false,
     'hover' => true,
+    'showPageSummary' => true,
     'pjax' => true,
     'pjaxSettings' => [
         'options' => ['id' => 'recipe-pjax'],
     ],
     'layout' => '{items}',
     'columns' => [
-        ['class' => SerialColumn::class],
         [
             'attribute' => 'section.name',
             'format' => 'text',
@@ -27,13 +31,13 @@ use kartik\grid\SerialColumn;
             'group' => true,
             'groupFooter' => static function (RecipeView $model, $key, $index, $widget) { // Closure method
                 return [
-                    'mergeColumns' => [[1,2]], // columns to merge in summary
+                    //'mergeColumns' => [[1,2]], // columns to merge in summary
                     'content' => [             // content to show in each summary cell
                         1 => '<span style="float:right">Итого</span>',
-                        3 => GridView::F_SUM,
+                        2 => GridView::F_SUM,
                     ],
                     'contentFormats' => [      // content reformatting for each summary cell
-                        3 => ['format' => 'number', 'decimals' => 2],
+                        2 => ['format' => 'number', 'decimals' => 0],
                     ],
                     'contentOptions' => [      // content html attributes for each summary cell
                         1 => ['style' => 'font-variant:small-caps'],
@@ -45,13 +49,25 @@ use kartik\grid\SerialColumn;
         ],
         [
             'attribute' => 'nutrient.name',
-            'format' => 'text',
+            'format' => 'html',
             'header' => 'Нутриент',
+            'pageSummary' => 'Итого',
+            'pageSummaryOptions' => ['class' => 'text-right text-end'],
+            'value' => static function ($model) {
+                return $model->comment
+                    ? implode('', [
+                        Html::tag('div', $model->nutrient->name),
+                        Html::tag('div', $model->comment, ['style' => 'font-size: 1rem']),
+                    ])
+                    : $model->nutrient->name;
+            }
         ],
         [
             'attribute' => 'weight',
             'format' => 'text',
             'header' => 'Вес',
+            'pageSummary' => true,
+            'pageSummaryFunc' => GridView::F_SUM
         ],
     ],
 ]) ?>

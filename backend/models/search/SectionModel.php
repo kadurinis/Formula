@@ -7,6 +7,9 @@ use common\models\models\Section;
 use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 
+/**
+ * @property Nutrient[] $allNutrients
+ */
 class SectionModel extends Section
 {
     public function search() {
@@ -15,7 +18,7 @@ class SectionModel extends Section
     }
 
     public function getQuery() {
-        return self::findActive('s')->joinWith('nutrients');
+        return self::findActive('s')->joinWith('nutrients')->groupBy('s.id');
     }
 
     public static function getList() {
@@ -23,7 +26,7 @@ class SectionModel extends Section
     }
 
     public function findUsage() {
-        return array_merge($this->sectionNutrients, $this->recipeNutrients);
+        return $this->recipes; // array_merge($this->sectionNutrients, $this->recipeNutrients);
     }
 
     public function __toString() {
@@ -61,6 +64,10 @@ class SectionModel extends Section
      * @return NutrientModel[]|\yii\db\ActiveRecord[]
      */
     public function getBound() {
-        return $this->nutrients;
+        return $this->allNutrients;
+    }
+
+    public function getAllNutrients() {
+        return $this->hasMany(NutrientModel::class, ['id' => 'nutrient_id'])->alias('n')->via('sectionNutrients');
     }
 }

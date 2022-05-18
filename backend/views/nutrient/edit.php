@@ -21,7 +21,7 @@ $this->title = $is_new ? 'Добавление нутриента' : 'Редак
 <?php endif ?>
 
 <?php $form = ActiveForm::begin(['method' => 'post']) ?>
-    <?= $form->field($model, 'name') ?>
+    <?= $form->field($model, 'name')->textInput(['placeholder' => 'Например, Сода']) ?>
     <?= $form->field($model, 'type_id')->dropDownList(Type::getList(), ['disabled' => !$can_type]) ?>
     <?= Html::submitButton($is_new ? 'Добавить' : 'Сохранить', ['class' => 'btn btn-info form-control']) ?>
 <?php ActiveForm::end() ?>

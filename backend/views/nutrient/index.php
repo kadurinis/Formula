@@ -60,7 +60,7 @@ $this->title = 'Нутриенты';
             }
         ],
         [
-            'header' => '',
+            'header' => Html::a('', ['nutrient/edit'], ['class' => 'btn btn-success glyphicon glyphicon-plus', 'title' => 'Добавить нутриент', 'data-pjax' => 0]),
             'format' => 'raw',
             'value' => static function (NutrientModel $model) {
                 return implode('&nbsp;', [

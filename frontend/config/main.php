@@ -10,7 +10,10 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'name' => 'Modern Devs',
+    'homeUrl' => ['recipe/index'],
     'controllerNamespace' => 'frontend\controllers',
+    'defaultRoute' => 'recipe/index',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',

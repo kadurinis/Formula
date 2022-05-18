@@ -42,10 +42,12 @@ $this->title = 'Типы';
         [
             'header' => '',
             'format' => 'raw',
+            'width' => '2%',
+            'noWrap' => true,
             'value' => static function (TypeModel $model) {
                 return implode('&nbsp;', [
-                    Html::a('', ['nutrient/edit', 'id' => $model->id], ['class' => 'glyphicon glyphicon-pencil', 'data-pjax' => 0]),
-                    Html::a('', ['nutrient/delete', 'id' => $model->id], ['class' => 'glyphicon glyphicon-remove', 'data-pjax' => 0])
+                    Html::a('', ['type/edit', 'id' => $model->id], ['class' => 'glyphicon glyphicon-pencil', 'style' => 'display:none', 'data-pjax' => 0]),
+                    Html::a('', ['type/delete', 'id' => $model->id], ['class' => 'glyphicon glyphicon-remove', 'style' => 'display:none', 'data-pjax' => 0])
                 ]);
             }
         ],

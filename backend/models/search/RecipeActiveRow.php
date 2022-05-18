@@ -2,12 +2,13 @@
 
 namespace backend\models\search;
 
+use common\models\models\Type;
 use yii\data\ArrayDataProvider;
 
 class RecipeActiveRow extends RecipeNutrientModel
 {
     public function search() {
-        return new ArrayDataProvider(['allModels' => $this->getModels()]);
+        return new ArrayDataProvider(['allModels' => $this->getModels(), 'pagination' => ['pageSize' => 200],]);
     }
 
     public function getModels() {
@@ -22,8 +23,8 @@ class RecipeActiveRow extends RecipeNutrientModel
         $doc = RecipeInactiveRow::findActive('ri')
             ->joinWith('section s')
             ->joinWith('nutrient n')
+            ->andWhere(['s.deleted_at' => null, 'n.deleted_at' => null])
             ->all();
-
         $all = array_merge($doc, $selected);
         $arr = [];
         /** В merge $selected идут вторым, поэтому при совпадении кодов (сочетания section-nutrient), предпочтение будет отдано выбранному */
@@ -34,7 +35,17 @@ class RecipeActiveRow extends RecipeNutrientModel
         usort($arr, static function ($a, $b) {
             return $a->section_id > $b->section_id || ($a->section_id === $b->section_id && $a->nutrient_id > $b->nutrient_id);
         });
+        return $arr;
+    }
 
+    public function getModelsPerType() {
+        $list = $this->getModels();
+        $arr = [];
+        foreach (Type::getList() as $id => $name) {
+            $arr[$id] = array_filter($list, static function (self $model) use ($id) {
+                return $model->section->type_id === $id;
+            });
+        }
         return $arr;
     }
 
