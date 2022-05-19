@@ -1,6 +1,7 @@
 <?php
 
 use common\models\models\Display;
+use common\models\models\Type;
 use frontend\models\models\RecipeView;
 use kartik\grid\GridView;
 use kartik\grid\SerialColumn;
@@ -9,13 +10,16 @@ use yii\helpers\Html;
 /**
  * @var \yii\data\ActiveDataProvider $dataProvider
  * @var \yii\web\View $this
+ * @var int $type_id
+ * @var int $total_weight
  */
 $this->registerCss(Display::getFontCss());
+$type = Type::getName($type_id, '');
 ?>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'resizableColumns' => false,
-    'striped' => false,
+    'striped' => true,
     'hover' => true,
     'showPageSummary' => true,
     'pjax' => true,
@@ -23,6 +27,11 @@ $this->registerCss(Display::getFontCss());
         'options' => ['id' => 'recipe-pjax'],
     ],
     'layout' => '{items}',
+    'formatter' => [
+        'class' => 'yii\i18n\Formatter',
+        'thousandSeparator' => ',',
+        'decimalSeparator' => ','
+    ],
     'columns' => [
         [
             'attribute' => 'section.name',
@@ -33,7 +42,7 @@ $this->registerCss(Display::getFontCss());
                 return [
                     //'mergeColumns' => [[1,2]], // columns to merge in summary
                     'content' => [             // content to show in each summary cell
-                        1 => '<span style="float:right">Итого</span>',
+                        1 => Html::tag('span', "Итого", ['style' => 'float: right']),
                         2 => GridView::F_SUM,
                     ],
                     'contentFormats' => [      // content reformatting for each summary cell
@@ -43,7 +52,7 @@ $this->registerCss(Display::getFontCss());
                         1 => ['style' => 'font-variant:small-caps'],
                     ],
                     // html attributes for group summary row
-                    'options' => ['class' => 'info table-info','style' => 'font-weight:bold;']
+                    'options' => ['class' => 'info table-info']
                 ];
             }
         ],
@@ -51,7 +60,7 @@ $this->registerCss(Display::getFontCss());
             'attribute' => 'nutrient.name',
             'format' => 'html',
             'header' => 'Нутриент',
-            'pageSummary' => 'Итого',
+            'pageSummary' => 'Всего',
             'pageSummaryOptions' => ['class' => 'text-right text-end'],
             'value' => static function ($model) {
                 return $model->comment
@@ -64,10 +73,15 @@ $this->registerCss(Display::getFontCss());
         ],
         [
             'attribute' => 'weight',
-            'format' => 'text',
-            'header' => 'Вес',
+            'format' => ['decimal', 0],
+            'header' => 'Вес, г',
             'pageSummary' => true,
             'pageSummaryFunc' => GridView::F_SUM
         ],
     ],
 ]) ?>
+<?php if (isset($total_weight)) : ?>
+    <div style="text-align: right; font-weight: bold">
+        Общий вес рецепта, г: <?= ($total_weight > 1000 ? (int)($total_weight / 1000) . ',' : '') . ($total_weight % 1000) ?>
+    </div>
+<?php endif ?>

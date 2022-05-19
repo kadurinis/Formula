@@ -13,18 +13,23 @@ use yii\data\ActiveDataProvider;
 use yii\web\View;
 $this->title = 'Дополнительный экран';
 SecondaryAsset::register($this);
+$type = mb_strtolower(Type::getList()[$type_id]);
 ?>
 <script>let recipe_id = <?= $model && $model->visible ? $model->id : 0 ?>;</script>
 <?php if ($model): ?>
     <div class="row" style="padding: 5px 0; font-size: 2rem">
-        <div class="col-md-3"><?= $model->name ?></div>
-        <div class="col-md-2"><?= date('d.m.Y', $model->created_at) ?></div>
-        <div class="col-md-2"><?= $model->field ?></div>
-        <div class="col-md-2"><?= $model->percent ?></div>
-        <div class="col-md-3">Весы <?= Type::getList()[$type_id] ?></div>
+        <div class="col-md-4">
+            <div><?= $model->name ?></div>
+            <div><?= date('d.m.Y', $model->created_at) ?></div>
+        </div>
+        <div class="col-md-2">
+            <div><?= $model->field ?></div>
+            <div><?= $model->percent ?></div>
+        </div>
+        <div class="col-md-6" style="text-align: right">Весы <?= $type ?> дозирования</div>
     </div>
     <?php if ($model->visible): ?>
-    <?= $this->render('view', ['dataProvider' => $dataProvider]) ?>
+    <?= $this->render('view', ['dataProvider' => $dataProvider, 'type_id' => $type_id, 'total_weight' => null]) ?>
     <?php else: ?>
         <div class="alert alert-warning">
             Рецепт <?= $model->name ?> закрыт администратором

@@ -59,8 +59,8 @@ class RecipeNutrient extends \yii\db\ActiveRecord
             'recipe_id' => 'Recipe ID',
             'section_id' => 'Section ID',
             'nutrient_id' => 'Nutrient ID',
-            'weight' => 'Weight',
-            'comment' => 'Comment',
+            'weight' => 'Вес, г',
+            'comment' => 'Комментарий',
             'created_at' => 'Created At',
             'deleted_at' => 'Deleted At',
         ];

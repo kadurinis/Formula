@@ -2,7 +2,7 @@
 
 namespace common\models\models;
 
-use app\models\relations\RecipeNutrient;
+use common\models\relations\RecipeNutrient;
 use common\models\traits\DeletableTrait;
 use Yii;
 
@@ -85,5 +85,9 @@ class Recipe extends BaseModel
 
     public function begin() {
         return new History(['recipe_id' => $this->id]);
+    }
+
+    public function getTotalWeight() {
+        return RecipeNutrient::findActive('rn')->andWhere(['rn.recipe_id' => $this->id])->sum('rn.weight');
     }
 }

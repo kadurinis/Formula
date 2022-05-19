@@ -5,6 +5,7 @@ namespace common\models\models;
 use common\models\traits\DeletableTrait;
 use Yii;
 use Yii\data\ActiveDataProvider;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "nutrient_type".
@@ -48,6 +49,10 @@ class Type extends BaseModel
 
     public static function getList() {
         return self::findActive()->select(['name', 'id'])->indexBy('id')->column();
+    }
+
+    public static function getName($id, $def = null) {
+        return ArrayHelper::getValue(self::getList(), $id, $def);
     }
 
     /**

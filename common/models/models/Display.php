@@ -55,7 +55,8 @@ class Display extends \yii\db\ActiveRecord
     public static function getFontCss() {
         $fs = Yii::$app->params['font.size'];
         $tp = Yii::$app->params['td.padding'];
-        return ".container .table tr td {font-size: {$fs}rem; padding: {$tp}px} .container div {font-size: {$fs}rem}";
+        $tph = $tp * 4;
+        return ".container .table tr td {font-size: {$fs}rem; padding: {$tp}px {$tph}px} .container div {font-size: {$fs}rem}";
     }
 
     public static function findActive() {

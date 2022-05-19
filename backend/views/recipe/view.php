@@ -72,6 +72,7 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
         ['class' => SerialColumn::class],
         [
             'attribute' => 'section.name',
+            'header' => 'Секция',
             'format' => 'text',
             'group' => true,
             'groupFooter' => function (RecipeActiveRow $model, $key, $index, $widget) { // Closure method
@@ -101,6 +102,7 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
         ],*/
         [
             'attribute' => 'nutrient.name',
+            'header' => 'Нутриент',
             'format' => 'text',
             'pageSummary' => 'Итого',
             'pageSummaryOptions' => ['class' => 'text-right text-end'],
@@ -114,7 +116,7 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
         ],
         [
             'class' => DataColumn::class,
-            'header' => 'Вес',
+            'header' => 'Вес, г',
             'format' => 'raw',
             'value' => static function (RecipeActiveRow $model, $key, $index, $context) {
                 return Html::textInput('weight-value', $model->weight, ['class' => 'form-control', 'placeholder' => 0, 'data-id' => "weight-{$model->section_id}-{$model->nutrient_id}"]);
