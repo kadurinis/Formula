@@ -8,6 +8,7 @@
 
 use backend\models\search\SectionModel;
 use backend\models\search\TypeModel;
+use common\models\models\Type;
 use kartik\grid\DataColumn;
 use kartik\grid\ExpandRowColumn;
 use kartik\grid\GridView;
@@ -19,12 +20,15 @@ use yii\helpers\Html;
 use yii\web\View;
 
 $this->title = 'Секции';
+$types = Type::getList();
 ?>
 
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $model,
     'resizableColumns' => false,
+    'hover' => true,
+    'layout' => '{items}',
     'pjax' => true,
     'pjaxSettings' => [
         'options' => ['id' => 'section-pjax'],
@@ -50,9 +54,10 @@ $this->title = 'Секции';
             ],
             'value' => static function (SectionModel $model) {
                 return $model->type->name;
-            }
+            },
+            'group' => true,
         ],
-        'created_at:datetime',
+        ['attribute' => 'created_at', 'format' => ['datetime', 'php:d.m.Y H:i:s'], 'filter' => false],
         [
             'header' => Html::a('', ['section/edit'], ['class' => 'btn btn-success glyphicon glyphicon-plus', 'title' => 'Добавить секцию', 'data-pjax' => 0]),
             'width' => '3%',

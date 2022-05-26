@@ -14,11 +14,11 @@ class SectionModel extends Section
 {
     public function search() {
         $this->load(\Yii::$app->request->queryParams);
-        return new ActiveDataProvider(['query' => $this->getQuery()]);
+        return new ActiveDataProvider(['query' => $this->getQuery(), 'pagination' => ['pageSize' => 200]]);
     }
 
     public function getQuery() {
-        return self::findActive('s')->joinWith('nutrients')->groupBy('s.id');
+        return self::findActive('s')->joinWith('nutrients')->orderBy('type_id ASC, cast(s.name as unsigned) ASC')->groupBy('s.id');
     }
 
     public static function getList() {

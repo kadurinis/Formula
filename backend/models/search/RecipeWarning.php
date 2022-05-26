@@ -25,7 +25,17 @@ class RecipeWarning extends RecipeNutrientModel
             ->andWhere(['not', ['n.deleted_at' => null]])
             ->all();
 
+        $dead_sections = self::findActive('rn')
+            ->joinWith('section s')
+            ->joinWith('recipe r')
+            ->andWhere(['r.deleted_at' => null])
+            ->andWhere(['not', ['s.deleted_at' => null]])
+            ->all();
+
         $arr = [];
+        foreach ($dead_sections as $model) {
+            $arr[$model->$indexBy] = "Секция {$model->section->name} была удалена";
+        }
         foreach ($wrong_types as $model) {
             $arr[$model->$indexBy] = "Нутриент не совпадает по типу с секцией";
         }

@@ -31,6 +31,9 @@
                     ['label' => 'Статистика', 'header' => true],
                     ['label' => 'История', 'url' => ['history/index'],  'icon' => 'clock'],
 
+                    ['label' => 'Экраны', 'header' => true],
+                    ['label' => 'Основной', 'url' => Yii::$app->params['primary_display_url'],  'icon' => 'circle', 'target' => '_blank'],
+                    ['label' => 'Дополнительный', 'url' => Yii::$app->params['secondary_display_url'],  'icon' => 'circle', 'target' => '_blank'],
                 ],
             ]);
             ?>

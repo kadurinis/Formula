@@ -69,12 +69,16 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
         );
     },
     'columns' => [
-        ['class' => SerialColumn::class],
+        [
+            'class' => SerialColumn::class,
+            'width' => '3%',
+        ],
         [
             'attribute' => 'section.name',
             'header' => 'Секция',
             'format' => 'text',
             'group' => true,
+            'headerOptions' => ['style' => 'width: 18%'],
             'groupFooter' => function (RecipeActiveRow $model, $key, $index, $widget) { // Closure method
                 return [
                     'mergeColumns' => [[1,2]], // columns to merge in summary
@@ -95,15 +99,11 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
                 ];
             }
         ],
-        /*[
-            'attribute' => 'section.type.name',
-            'group' => true,
-            'subGroupOf' => 1,
-        ],*/
         [
             'attribute' => 'nutrient.name',
             'header' => 'Нутриент',
             'format' => 'text',
+            'headerOptions' => ['style' => 'width: 28%'],
             'pageSummary' => 'Итого',
             'pageSummaryOptions' => ['class' => 'text-right text-end'],
         ],
@@ -118,6 +118,7 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
             'class' => DataColumn::class,
             'header' => 'Вес, г',
             'format' => 'raw',
+            'headerOptions' => ['style' => 'width: 23%'],
             'value' => static function (RecipeActiveRow $model, $key, $index, $context) {
                 return Html::textInput('weight-value', $model->weight, ['class' => 'form-control', 'placeholder' => 0, 'data-id' => "weight-{$model->section_id}-{$model->nutrient_id}"]);
             }
@@ -125,6 +126,7 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
         [
             'attribute' => 'comment',
             'format' => 'raw',
+            'headerOptions' => ['style' => 'width: 23%'],
             'value' => static function (RecipeActiveRow $model) {
                 return Html::textInput('comment-value', $model->comment, ['class' => 'form-control', 'data-id' => "comment-{$model->section_id}-{$model->nutrient_id}", 'disabled' => !$model->id]);
             }

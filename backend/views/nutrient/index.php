@@ -44,7 +44,7 @@ $this->title = 'Нутриенты';
                 return $model->type->name;
             }
         ],
-        'created_at:datetime',
+        ['attribute' => 'created_at', 'format' => ['datetime', 'php:d.m.Y H:i:s'], 'filter' => false],
         [
             'header' => 'Секции',
             'format' => 'raw',

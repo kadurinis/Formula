@@ -33,7 +33,7 @@ class RecipeActiveRow extends RecipeNutrientModel
         }
 
         usort($arr, static function ($a, $b) {
-            return $a->section_id > $b->section_id || ($a->section_id === $b->section_id && $a->nutrient_id > $b->nutrient_id);
+            return (int)$a->section->name > (int)$b->section->name || ($a->section->name === $b->section->name && $a->nutrient_id > $b->nutrient_id);
         });
         return $arr;
     }
