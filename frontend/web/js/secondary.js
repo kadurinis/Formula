@@ -13,7 +13,7 @@ $(document).ready(function() {
                 }
             },
             error: function (data) {
-                alert('Ошибка');
+                console.log(data);
             }
         });
     }
