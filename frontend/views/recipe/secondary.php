@@ -20,7 +20,7 @@ $type = mb_strtolower(Type::getList()[$type_id]);
     <div class="row" style="padding: 5px 0; font-size: 2rem">
         <div class="col-md-4">
             <div><?= $model->name ?></div>
-            <div><?= date('d.m.Y', $model->created_at) ?></div>
+            <div><?= date('d.m.Y', $model->getUpdatedAt()) ?></div>
         </div>
         <div class="col-md-2">
             <div><?= $model->field ?></div>

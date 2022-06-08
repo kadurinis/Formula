@@ -5,6 +5,8 @@ namespace common\models\models;
 use common\models\relations\RecipeNutrient;
 use common\models\traits\DeletableTrait;
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "recipe".
@@ -59,6 +61,10 @@ class Recipe extends BaseModel
         ];
     }
 
+    public function getUpdatedAt() {
+        return max($this->created_at, RecipeNutrient::find()->where(['recipe_id' => $this->id])->max('IFNULL(`deleted_at`, `created_at`)'));
+    }
+
     /**
      * Gets query for [[Histories]].
      *
@@ -89,5 +95,18 @@ class Recipe extends BaseModel
 
     public function getTotalWeight() {
         return RecipeNutrient::findActive('rn')->andWhere(['rn.recipe_id' => $this->id])->sum('rn.weight');
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['created_at'],
+                ],
+            ],
+        ];
     }
 }
