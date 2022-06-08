@@ -6,7 +6,7 @@ return [
     'senderName' => 'Example.com mailer',
     'user.passwordResetTokenExpire' => 3600,
     'user.passwordMinLength' => 8,
-    'font.size' => '3.2',
+    'font.size' => '3.5',
     'td.padding' => '4',
     'primary_display_url' => 'http://formula.local/index.php?r=recipe/primary',
     'secondary_display_url' => 'http://formula.local/index.php?r=recipe/secondary',
