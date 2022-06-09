@@ -29,7 +29,7 @@ $type = Type::getName($type_id, '');
     'layout' => '{items}',
     'formatter' => [
         'class' => 'yii\i18n\Formatter',
-        'thousandSeparator' => '',
+        'thousandSeparator' => ' ',
         'decimalSeparator' => '.'
     ],
     'columns' => [
