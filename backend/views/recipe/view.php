@@ -87,7 +87,7 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
                         3 => GridView::F_SUM,
                     ],
                     'contentFormats' => [      // content reformatting for each summary cell
-                        3 => ['format' => 'number', 'decimals' => 2],
+                        3 => ['format'=>'number', 'decimals'=>2, 'decPoint'=>'.', 'thousandSep'=>' '],
                     ],
                     'contentOptions' => [      // content html attributes for each summary cell
                         1 => ['style' => 'font-variant:small-caps'],

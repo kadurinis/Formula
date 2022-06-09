@@ -12,7 +12,7 @@ class RecipeView extends RecipeNutrient
     public $type_id;
 
     public function search() {
-        return new ArrayDataProvider(['allModels' => $this->sort($this->getModels())]);
+        return new ArrayDataProvider(['allModels' => $this->sort($this->getModels()), 'pagination' => ['pageSize' => 200],]);
     }
 
     public function sort($array) {
