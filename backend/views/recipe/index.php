@@ -52,6 +52,7 @@ $this->title = 'Рецепты';
                     Html::a('', ['recipe/view', 'id' => $model->id], ['class' => 'glyphicon glyphicon-list', 'title' => 'Редактировать секции и нутриенты', 'data-pjax' => 0]),
                     Html::a('', [$model->visible ? 'recipe/hide' : 'recipe/show', 'id' => $model->id], ['class' => $model->visible ? 'glyphicon glyphicon-eye-close' : 'glyphicon glyphicon-eye-open', 'title' => $model->visible ? 'Скрыть от операторов' : 'Активировать', 'data-pjax' => 0]),
                     Html::a('', ['recipe/edit', 'id' => $model->id], ['class' => 'glyphicon glyphicon-pencil', 'title' => 'Редактировать основные поля', 'data-pjax' => 0]),
+                    Html::a('', ['recipe/copy', 'id' => $model->id], ['class' => 'glyphicon glyphicon-copy', 'title' => 'Копировать рецепт', 'data-pjax' => 0]),
                     Html::a('', ['recipe/delete', 'id' => $model->id], ['class' => 'glyphicon glyphicon-remove', 'title' => 'Удалить рецепт', 'data-pjax' => 0])
                 ]);
             }

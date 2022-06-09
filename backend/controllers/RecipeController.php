@@ -67,6 +67,16 @@ class RecipeController extends Controller
         return $this->visible($this->findModel(\Yii::$app->request->get('id')), RecipeModel::INVISIBLE);
     }
 
+    public function actionCopy() {
+        if ($model = $this->findModel(\Yii::$app->request->get('id'))) {
+            $copy = $model->copy();
+            if (is_string($copy)) {
+                \Yii::$app->session->setFlash('error', $copy);
+            }
+        }
+        return $this->redirect(['recipe/index']);
+    }
+
     protected function visible($model, $val) {
         if ($model) {
             $model->visible = $val;

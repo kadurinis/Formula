@@ -61,6 +61,16 @@ class RecipeNutrient extends \yii\db\ActiveRecord
         return parent::beforeValidate();
     }
 
+    public function copy() {
+        return new self([
+            'recipe_id' => $this->recipe_id,
+            'section_id' => $this->section_id,
+            'nutrient_id' => $this->nutrient_id,
+            'weight' => $this->weight,
+            'comment' => $this->comment,
+        ]);
+    }
+
     /**
      * {@inheritdoc}
      */

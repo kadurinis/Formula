@@ -64,7 +64,8 @@ class SectionModel extends Section
      * @return NutrientModel[]|\yii\db\ActiveRecord[]
      */
     public function getBound() {
-        return $this->allNutrients;
+
+        return NutrientModel::find()->alias('n')->joinWith('sectionNutrients')->andWhere(['sn.section_id' => $this->id])->orderBy(['sn.id' => SORT_ASC])->all();
     }
 
     public function getAllNutrients() {

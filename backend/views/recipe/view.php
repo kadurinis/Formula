@@ -37,7 +37,7 @@ $this->registerCss('.kv-page-summary td:last-child {display: none}');
     </div>
     <div class="col-md-6" style="text-align: right">
         <?= $model->name ?> &nbsp;
-        <?= date('d.m.Y', $model->created_at) ?> &nbsp;
+        <?= date('d.m.Y', $model->getUpdatedAt()) ?> &nbsp;
         <?= $model->field ?> &nbsp;
         <?= $model->percent ?><br />
         <div style="font-size: 14pt">

@@ -17,7 +17,9 @@ class RecipeView extends RecipeNutrient
 
     public function sort($array) {
         usort($array, static function(self $a, self $b) {
-            return (int)($a->section->name) > (int)($b->section->name);
+            return ((int)($a->section->name) > (int)($b->section->name)) || (
+                    (int)($a->section->name) === (int)($b->section->name) && $a->id > $b->id
+                );
         });
         return $array;
     }

@@ -84,7 +84,7 @@ $types = Type::getList();
             'detailAnimationDuration' => 'fast',
             'detail' => static function (SectionModel $model) {
                 return GridView::widget([
-                    'dataProvider' => new ArrayDataProvider(['allModels' => $model->nutrients]),
+                    'dataProvider' => new ArrayDataProvider(['allModels' => $model->getBound()]),
                     'layout' => '{items}',
                     'showHeader' => false,
                     'columns' => [

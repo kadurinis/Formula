@@ -36,7 +36,7 @@ $(document).ready(function() {
     let refreshTotal = () => {
         let sum = 0;
         $('input[name="weight-value"]').each((i, el) => sum += Number(el.value));
-        total.html(sum > 1000 ? (Math.floor(sum / 1000) + ' кг ' + sum % 1000) : sum);
+        total.html(sum, ' г');
     }
 
     let buildParams = (target) => {
