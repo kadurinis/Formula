@@ -29,11 +29,12 @@ $type = Type::getName($type_id, '');
     'layout' => '{items}',
     'formatter' => [
         'class' => 'yii\i18n\Formatter',
-        'thousandSeparator' => ',',
-        'decimalSeparator' => ','
+        'thousandSeparator' => '',
+        'decimalSeparator' => '.'
     ],
     'columns' => [
         [
+            'class' => \kartik\grid\DataColumn::class,
             'attribute' => 'section.name',
             'format' => 'text',
             'header' => 'Секция',
@@ -46,7 +47,7 @@ $type = Type::getName($type_id, '');
                         2 => GridView::F_SUM,
                     ],
                     'contentFormats' => [      // content reformatting for each summary cell
-                        2 => ['format' => 'number', 'decimals' => 0],
+                        2 => ['format'=>'number', 'decimals'=>2, 'decPoint'=>'.', 'thousandSep'=>' ']
                     ],
                     'contentOptions' => [      // content html attributes for each summary cell
                         1 => ['style' => 'font-variant:small-caps'],
@@ -73,7 +74,7 @@ $type = Type::getName($type_id, '');
         ],
         [
             'attribute' => 'weight',
-            'format' => ['decimal', 0],
+            'format' => ['decimal', 2],
             'header' => 'Вес, г',
             'pageSummary' => true,
             'pageSummaryFunc' => GridView::F_SUM

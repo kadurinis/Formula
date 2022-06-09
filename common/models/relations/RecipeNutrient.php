@@ -14,7 +14,7 @@ use common\models\traits\DeletableTrait;
  * @property int|null $recipe_id
  * @property int|null $section_id
  * @property int|null $nutrient_id
- * @property int|null $weight
+ * @property string|null $weight
  * @property string|null $comment
  * @property int|null $created_at
  * @property int|null $deleted_at
@@ -41,12 +41,24 @@ class RecipeNutrient extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['recipe_id', 'section_id', 'nutrient_id', 'weight', 'created_at', 'deleted_at'], 'integer'],
-            [['comment'], 'string', 'max' => 255],
+            [['recipe_id', 'section_id', 'nutrient_id', 'created_at', 'deleted_at'], 'integer'],
+            [['weight', 'comment'], 'string', 'max' => 255],
             [['nutrient_id'], 'exist', 'skipOnError' => true, 'targetClass' => Nutrient::class, 'targetAttribute' => ['nutrient_id' => 'id']],
             [['recipe_id'], 'exist', 'skipOnError' => true, 'targetClass' => Recipe::class, 'targetAttribute' => ['recipe_id' => 'id']],
             [['section_id'], 'exist', 'skipOnError' => true, 'targetClass' => Section::class, 'targetAttribute' => ['section_id' => 'id']],
         ];
+    }
+
+    public function beforeValidate()
+    {
+        if ($this->weight) {
+            $this->weight = str_replace(',', '.', $this->weight);
+            if (!is_numeric($this->weight)) {
+                $this->addError('weight', 'В весе следует указать число. Дробная часть отделяется точкой');
+                return false;
+            }
+        }
+        return parent::beforeValidate();
     }
 
     /**
