@@ -36,6 +36,9 @@ $total_weight =$model->getTotalWeight();
 </div>
 <?php if ($model->visible): ?>
 <?= $this->render('view', ['dataProvider' => $dataProvider, 'type_id' => $type_id, 'total_weight' => $total_weight]) ?>
+<div style="text-align: right">
+    Ручной ввод: <?= $model->getManualInput() ?>
+</div>
 <?php else: ?>
 <div class="alert alert-warning">
     Рецепт <?= $model->name ?> закрыт администратором

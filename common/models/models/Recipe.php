@@ -97,6 +97,14 @@ class Recipe extends BaseModel
         return RecipeNutrient::findActive('rn')->andWhere(['rn.recipe_id' => $this->id])->sum('rn.weight');
     }
 
+    public function getManualInput() {
+        return RecipeNutrient::findActive('rn')
+            ->joinWith('section s')
+            ->andWhere(['rn.recipe_id' => $this->id])
+            ->andWhere(['>','s.name', 0])
+            ->sum('rn.weight');
+    }
+
     public function behaviors()
     {
         return [
