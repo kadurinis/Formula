@@ -17,12 +17,14 @@ class RecipeActiveRow extends RecipeNutrientModel
             ->joinWith('recipe r')
             ->joinWith('section s')
             ->joinWith('nutrient n')
+            ->joinWith('catalog c')
             ->andWhere(['rn.recipe_id' => $this->recipe_id])
             ->all();
         /** @var self[] $all */
         $doc = RecipeInactiveRow::findActive('ri')
             ->joinWith('section s')
             ->joinWith('nutrient n')
+            ->joinWith('catalog c')
             ->andWhere(['s.deleted_at' => null, 'n.deleted_at' => null])
             ->all();
         $all = array_merge($doc, $selected);
@@ -33,7 +35,8 @@ class RecipeActiveRow extends RecipeNutrientModel
         }
 
         usort($arr, static function ($a, $b) {
-            return (int)$a->section->name > (int)$b->section->name || ($a->section->name === $b->section->name && $a->nutrient_id > $b->nutrient_id);
+            return ((int)$a->section->name > (int)$b->section->name)
+                || ($a->section->name === $b->section->name && $a->catalog->id > $b->catalog->id);
         });
         return $arr;
     }

@@ -22,6 +22,7 @@ use common\models\traits\DeletableTrait;
  * @property Nutrient $nutrient
  * @property Recipe $recipe
  * @property Section $section
+ * @property SectionNutrient $catalog
  */
 class RecipeNutrient extends \yii\db\ActiveRecord
 {
@@ -116,5 +117,9 @@ class RecipeNutrient extends \yii\db\ActiveRecord
     public function getSection()
     {
         return $this->hasOne(Section::class, ['id' => 'section_id']);
+    }
+
+    public function getCatalog() {
+        return $this->hasOne(SectionNutrient::class, ['section_id' => 'section_id', 'nutrient_id' => 'nutrient_id']);
     }
 }
