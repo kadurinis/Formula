@@ -15,6 +15,7 @@ use yii\helpers\Html;
  */
 $this->registerCss(Display::getFontCss());
 $type = Type::getName($type_id, '');
+Yii::$app->formatter->thousandSeparator = ' ';
 ?>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
@@ -83,6 +84,6 @@ $type = Type::getName($type_id, '');
 ]) ?>
 <?php if (isset($total_weight)) : ?>
     <div style="text-align: right; font-weight: bold">
-        Общий вес рецепта, г: <?= ($total_weight > 1000 ? (int)($total_weight / 1000) . ',' : '') . ($total_weight % 1000) ?>
+        Общий вес рецепта, г: <?= Yii::$app->formatter->format($total_weight, ['decimal', 'decimals'=>2, 'decPoint'=>'.', 'thousandSeparator'=>' ']) ?>
     </div>
 <?php endif ?>

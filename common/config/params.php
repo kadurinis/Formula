@@ -8,6 +8,6 @@ return [
     'user.passwordMinLength' => 8,
     'font.size' => '3.5',
     'td.padding' => '4',
-    'primary_display_url' => 'http://formula.local/index.php?r=recipe/primary',
-    'secondary_display_url' => 'http://formula.local/index.php?r=recipe/secondary',
+    'primary_display_url' => 'http://formula.prod/index.php?r=recipe/primary',
+    'secondary_display_url' => 'http://formula.prod/index.php?r=recipe/secondary',
 ];
