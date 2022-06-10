@@ -10,4 +10,5 @@ return [
     'td.padding' => '4',
     'primary_display_url' => 'http://formula.prod/index.php?r=recipe/primary',
     'secondary_display_url' => 'http://formula.prod/index.php?r=recipe/secondary',
+    'section_name_unique' => false,
 ];

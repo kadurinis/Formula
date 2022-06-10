@@ -43,7 +43,7 @@ class SectionModel extends Section
     public function beforeSave($insert)
     {
         $exist = self::findActive()->andWhere(['name' => $this->name, 'type_id' => $this->type_id])->one();
-        if ($exist && ($insert || $exist->id !== $this->id)) {
+        if (\Yii::$app->params['section_name_unique'] && $exist && ($insert || $exist->id !== $this->id)) {
             $this->addError('name', "Секция с именем {$this->name} существует");
             return false;
         }
