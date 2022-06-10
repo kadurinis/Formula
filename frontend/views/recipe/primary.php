@@ -37,7 +37,7 @@ $total_weight =$model->getTotalWeight();
 <?php if ($model->visible): ?>
 <?= $this->render('view', ['dataProvider' => $dataProvider, 'type_id' => $type_id, 'total_weight' => $total_weight]) ?>
 <div style="text-align: right">
-    Ручной ввод: <?= $model->getManualInput() ?>
+    Ручной ввод: <?= Yii::$app->formatter->format($model->getManualInput(), ['decimal', 'decimals'=>2, 'decPoint'=>'.', 'thousandSeparator'=>' ']) ?>
 </div>
 <?php else: ?>
 <div class="alert alert-warning">
