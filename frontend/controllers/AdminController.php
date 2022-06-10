@@ -6,12 +6,36 @@ use app\models\models\Nutrient;
 use app\models\models\Section;
 use app\models\models\Type;
 use app\models\relations\SectionNutrient;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 class AdminController extends Controller
 {
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['*'],
+                        'allow' => false,
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
+
+
     public function actionSectionEditor() {
         $id = \Yii::$app->request->get('id');
         /** @var Section $model */
