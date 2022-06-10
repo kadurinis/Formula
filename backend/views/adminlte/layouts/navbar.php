@@ -23,6 +23,11 @@ use yii\helpers\Html;
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+        <?php if (!Yii::$app->user->isGuest) : ?>
+        <li class="nav-item">
+            <?= Html::a('Выйти', ['site/logout'], ['role' => 'button', 'class' => 'nav-link']) ?>
+        </li>
+        <?php endif ?>
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
