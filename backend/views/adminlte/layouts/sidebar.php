@@ -27,6 +27,7 @@
 
                     ['label' => 'Настройки', 'header' => true],
                     ['label' => 'Отображение', 'url' => ['display/index'],  'icon' => 'cog'],
+                    ['label' => 'Помощь', 'url' => ['site/help'],  'icon' => 'info'],
 
                     ['label' => 'Статистика', 'header' => true],
                     ['label' => 'История', 'url' => ['history/index'],  'icon' => 'clock'],
