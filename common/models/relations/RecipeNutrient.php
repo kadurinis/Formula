@@ -6,6 +6,7 @@ use common\models\models\Nutrient;
 use common\models\models\Recipe;
 use common\models\models\Section;
 use common\models\traits\DeletableTrait;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "recipe_nutrient".
@@ -120,6 +121,6 @@ class RecipeNutrient extends \yii\db\ActiveRecord
     }
 
     public function getCatalog() {
-        return $this->hasOne(SectionNutrient::class, ['section_id' => 'section_id', 'nutrient_id' => 'nutrient_id']);
+        return $this->hasOne(SectionNutrient::class, ['section_id' => 'section_id', 'nutrient_id' => 'nutrient_id'])->alias('c')->andOnCondition(['c.deleted_at' => null]);
     }
 }
