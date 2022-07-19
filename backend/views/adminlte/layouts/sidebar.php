@@ -18,6 +18,7 @@
                 'items' => [
                     ['label' => 'Рецепты', 'header' => true],
                     ['label' => 'Список', 'url' => ['recipe/index'], 'icon' => 'list', 'badge' => ($c = RecipeWarning::getCount()) ? Html::tag('span', $c, ['class' => 'right badge badge-danger', 'title' => 'Конфликты']) : ''],
+                    ['label' => 'Архив', 'url' => ['recipe/archive'],  'icon' => 'archive'],
                     ['label' => 'Добавить', 'url' => ['recipe/edit'],  'icon' => 'plus'],
 
                     ['label' => 'Справочник', 'header' => true],

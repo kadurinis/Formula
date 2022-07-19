@@ -38,7 +38,13 @@ class RecipeController extends Controller
     public function actionIndex() {
         $model = $this->createModel();
         $warning = new RecipeWarning();
-        return $this->render('index', ['dataProvider' => $model->search(), 'model' => $model, 'warnings' => $warning->getModels('recipe_id')]);
+        return $this->render('index', ['dataProvider' => $model->searchActual(), 'model' => $model, 'warnings' => $warning->getModels('recipe_id')]);
+    }
+
+    public function actionArchive() {
+        $model = $this->createModel();
+        $warning = new RecipeWarning();
+        return $this->render('index', ['dataProvider' => $model->searchInvisible(), 'model' => $model, 'warnings' => $warning->getModels('recipe_id')]);
     }
 
     public function actionEdit() {

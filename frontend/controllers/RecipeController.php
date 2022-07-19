@@ -17,7 +17,7 @@ class RecipeController extends Controller
     }
 
     public function actionLists() {
-        return $this->render('list', ['list' => Recipe::getList()]);
+        return $this->render('list', ['list' => Recipe::getActualList()]);
     }
 
     public function actionPrimary() {
@@ -26,7 +26,7 @@ class RecipeController extends Controller
             $view = new RecipeView(['recipe_id' => $active->recipe_id, 'type_id' => $type_id]);
             return $this->render('primary', ['model' => $active->recipe, 'dataProvider' => $view->search(), 'type_id' => $type_id]);
         }
-        return $this->render('list', ['list' => Recipe::getList()]);
+        return $this->render('list', ['list' => Recipe::getActualList()]);
     }
 
     public function actionSecondary() {

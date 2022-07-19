@@ -13,7 +13,19 @@ class RecipeModel extends Recipe
 
     public function search() {
         $this->load(\Yii::$app->request->queryParams);
-        return new ActiveDataProvider(['query' => $this->getQuery()]);
+        return new ActiveDataProvider(['query' => $this->getQuery(), 'pagination' => ['pageSize' => 50]]);
+    }
+
+    public function searchActual() {
+        $provider = $this->search();
+        $provider->query->andWhere(['visible' => 1]);
+        return $provider;
+    }
+
+    public function searchInvisible() {
+        $provider = $this->search();
+        $provider->query->andWhere(['visible' => 0]);
+        return $provider;
     }
 
     public function getQuery() {

@@ -89,6 +89,10 @@ class Recipe extends BaseModel
         return self::findActive()->select(['name', 'id'])->indexBy('id')->column();
     }
 
+    public static function getActualList() {
+        return self::findActive()->select(['name', 'id'])->andWhere(['visible' => 1])->indexBy('id')->column();
+    }
+
     public function begin() {
         return new History(['recipe_id' => $this->id]);
     }
